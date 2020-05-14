@@ -1,0 +1,68 @@
+server:
+  port: 8080
+
+---
+spring:
+  profiles: default
+  cloud:
+    gateway:
+      routes:
+        - id: roommanagement
+          uri: localhost:8083
+          predicates:
+            - Path=/roommanagements/**
+        - id: reservationmanagement
+          uri: localhost:8081
+          predicates:
+            - Path=/reservationmanagements/**
+        - id: paymentmanagement
+          uri: localhost:8082
+          predicates:
+            - Path=/paymentmanagements/**
+        - id: productmanagement
+            uri: localhost:8085
+            predicates:
+              - Path=/productmanagements/**
+        - id: roominfo
+            uri: localhost:8084
+            predicates:
+              - Path=/roominfoes/**
+
+---
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: roommanagement
+          uri: roommanagement:8080
+          predicates:
+            - Path=/roommanagements/**
+        - id: reservationmanagement
+          uri: reservationmanagement:8080
+          predicates:
+            - Path=/reservationmanagements/**
+        - id: paymentmanagement
+          uri: paymentmanagement:8080
+          predicates:
+            - Path=/paymentmanagements/**
+        - id: productmanagement
+            uri: productmanagement:8080
+            predicates:
+              - Path=/productmanagements/**
+        - id: roominfo
+            uri: roominfo:8080
+            predicates:
+              - Path=/roominfoes/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+server:
+  port: 8080
